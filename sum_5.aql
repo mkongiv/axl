@@ -1,0 +1,44 @@
+
+// https://pdfs.semanticscholar.org/a1dc/59b51794cf9737a7985da38a7230db89740a.pdf?_ga=2.224217371.126021367.1562070849-1623466557.1544034786
+
+// Taken from: A Fast Quantum Circuit for Addition with Few Qubits
+// by Takahashi and Kunihiro
+
+param N;
+statement S1;
+statement S2;
+statement S3;
+statement S4;
+statement S5;
+statement S6;
+statement S7;
+
+S1 := { i : 0 <= i, i < 2*N-2 (%) #CX(2*N,i+1) };
+
+// Single gate from |c> to |b4>
+S2 := { i : 0 <= i, i < 1 (%) #CX(0,2*N) };
+
+S3 := { i : 1 <= i, i < N (%) 
+  #CX(2*N, 2*i) [+]
+  #CX(2*N, 2*i-1) [+]
+  #CCX(2*i-1, 2*i, 2*N)  
+};
+
+S4 := { i : 1 <= i, i < N-1 (%) #CCX(2*i-1, 2*i, 0) };
+
+// CNOT from |c> to |a3>
+S5 := { i : 0 <= i, i < 1 (%) #CX(0,N+2) };
+
+// 3 pairs of gates CX and CCX
+S6 := { i : 0 <= i, i < N - 2 (%) 
+  #CCX(N-2*i, N-2*i+1, 0) [+]
+  #CX(0,N-2*i) 
+};
+
+// 5 CNOT covering each pair |a_i> and |b_i>
+S7 := { i : 1 <= i, i <= N (%) #CX(2*i-1,2*i) };
+
+codegen { S1 (+) S2 (+) S3 (+)  S4 (+) S5 (+) S6 (+) S7 } with {N=5}
+//codegen { S1 (+) S3   } with {N=5}
+apply { plutomin }
+;

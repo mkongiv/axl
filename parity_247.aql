@@ -1,0 +1,11 @@
+
+param M;
+statement S1;
+
+S1 := { t : 1 <= t, t <= M (%) 
+  #X(t) (+)
+  #CNOT(t, 0)
+};
+
+
+codegen { S1 } with { M=6 } apply { plutomax };
