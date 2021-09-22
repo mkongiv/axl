@@ -6,8 +6,11 @@ Artifact associated to "On the Impact of Affine Loop Transformations" published 
 Installation:
 
 ./axl-install.sh
+
 source axl-vars.sh
+
 make
 
 Use:
+
 ./axl < circuit.aql
