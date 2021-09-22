@@ -39,7 +39,7 @@ PONOS_INC=ponos-install/include
 PONOS_LIB=ponos-install/lib
 
 
-GENERATED=$(MYPREFIX)-scanner.c $(MYPREFIX)-parser.c stack.hh location.hh $(MYPREFIX)-parser.* $(MYBIN)
+GENERATED=$(MYPREFIX)-scanner.c $(MYPREFIX)-parser.c stack.hh location.hh position.hh $(MYPREFIX)-parser.* $(MYBIN)
 
 INC := -I. -I ir/ -I $(GMP_INC) -I $(ISL_INC) -I $(OSL_INC)
 INC := $(INC) -I $(SCOPLIB_INC) -I $(CANDL_INC) -I $(IRCONVERTER_INC) -I $(PAST_INC)
@@ -54,13 +54,8 @@ MACFLAG = -isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDe
 
 all: lex grammar axl
 
-axl: lex grammar libponos
+axl: lex grammar 
 	$(CC) -o $(MYBIN) $(SRCS) $(CFLAGS)
-
-.PHONY: libponos
-libponos: ponos/ponos/*.c ponos/ponos/include/ponos/*.h
-	$(MAKE) -C ponos
-	$(MAKE) -C ponos install 
 
 manz: lex grammar
 	$(CC) $(MACFLAG) -o $(MYBIN) $(MYPREFIX)-scanner.c	$(MYPREFIX)-parser.c utils.cc $(CFLAGS)
